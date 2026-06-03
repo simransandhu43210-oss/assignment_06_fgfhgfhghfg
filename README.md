@@ -1,4 +1,14 @@
-# assignment_06_fgfhgfhghfg
+# Prompt Engineering Portfolio
+
+**Name:** Simranpreet kaur
+
+**Date:** 04 June 2026
+
+**LLM Used:** ChatGPT (GPT-5.5)
+
+---
+
+# Part 1: Prompt Design & Iteration
 # Part 1: Prompt Design & Iteration
 
 ## 1.1 Scenario A: Technical Explanation
