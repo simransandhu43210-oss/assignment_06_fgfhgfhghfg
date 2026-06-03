@@ -9,7 +9,6 @@
 ---
 
 # Part 1: Prompt Design & Iteration
-# Part 1: Prompt Design & Iteration
 
 ## 1.1 Scenario A: Technical Explanation
 
