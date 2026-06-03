@@ -289,3 +289,167 @@ For this experiment, the medium temperature produced the best result. It maintai
 The experiment demonstrated that temperature significantly affects how an LLM responds to the same prompt. Lower temperatures produce safer and more predictable outputs, while higher temperatures encourage creativity and variation.
 
 Selecting the appropriate temperature depends on the goal of the task. Users should choose lower temperatures for factual work and higher temperatures for creative tasks.
+
+
+# Part 3: Strategic Prompting Techniques
+
+## 3.1 Chain-of-Thought Prompting
+
+### Selected Problem: Planning Task
+
+Problem:
+
+You have a meeting at 2:00 PM that requires 1 hour of preparation time, a 30-minute commute, and you need to eat lunch for 30 minutes beforehand. You also have a 45-minute call scheduled at 11:00 AM. What time should you start preparing to make everything work?
+
+---
+
+### Without Chain-of-Thought
+
+#### Prompt
+
+```text
+You have a meeting at 2:00 PM that requires 1 hour of preparation time, a 30-minute commute, and a 30-minute lunch beforehand. You also have a 45-minute call at 11:00 AM.
+
+What time should you start preparing?
+```
+
+#### LLM Output
+
+You should start preparing at 12:00 PM.
+
+---
+
+### With Chain-of-Thought
+
+#### Prompt
+
+```text
+You have a meeting at 2:00 PM that requires 1 hour of preparation time, a 30-minute commute, and a 30-minute lunch beforehand. You also have a 45-minute call at 11:00 AM.
+
+Let's solve this step by step and explain the reasoning before giving the final answer.
+```
+
+#### LLM Output
+
+Meeting time: 2:00 PM
+
+Work backward:
+
+- Arrive at meeting by 2:00 PM
+- Commute takes 30 minutes, so leave at 1:30 PM
+- Lunch takes 30 minutes, so lunch should be from 1:00 PM to 1:30 PM
+- Preparation requires 1 hour, so preparation should be from 12:00 PM to 1:00 PM
+
+The 45-minute call ends at 11:45 AM, which leaves enough time before preparation begins.
+
+Final Answer: Start preparing at 12:00 PM.
+
+---
+
+### Comparison and Analysis
+
+The chain-of-thought prompt produced a more transparent and structured response. Instead of providing only an answer, it explained each step used to reach the conclusion. This makes it easier to verify the correctness of the solution and identify potential mistakes. One limitation is that chain-of-thought responses are usually longer and may provide more detail than necessary for simple problems.
+
+---
+
+## 3.2 Few-Shot Prompting
+
+### Task
+
+Create a sentiment classifier that categorizes customer reviews as Positive, Negative, or Neutral.
+
+---
+
+### Step 1: Zero-Shot Attempt
+
+#### Prompt
+
+```text
+Classify each customer review as Positive, Negative, or Neutral.
+
+Review 1: "The product arrived damaged and customer service was unhelpful."
+
+Review 2: "Works as expected, nothing special but does the job."
+
+Review 3: "Absolutely love this! Best purchase I've made all year!"
+
+Review 4: "The quality is okay but slightly overpriced for what you get."
+
+Review 5: "Terrible experience, would not recommend to anyone."
+```
+
+#### Zero-Shot Results
+
+| Review | Classification |
+|----------|----------|
+| 1 | Negative |
+| 2 | Neutral |
+| 3 | Positive |
+| 4 | Neutral |
+| 5 | Negative |
+
+---
+
+### Step 2: Few-Shot Attempt
+
+#### Prompt
+
+```text
+Classify customer reviews as Positive, Negative, or Neutral.
+
+Example 1
+
+Review: "This product exceeded my expectations."
+
+Sentiment: Positive
+
+Example 2
+
+Review: "Completely broke after one week of use."
+
+Sentiment: Negative
+
+Example 3
+
+Review: "It's fine and does what it says."
+
+Sentiment: Neutral
+
+Now classify the following reviews:
+
+Review 1: "The product arrived damaged and customer service was unhelpful."
+
+Review 2: "Works as expected, nothing special but does the job."
+
+Review 3: "Absolutely love this! Best purchase I've made all year!"
+
+Review 4: "The quality is okay but slightly overpriced for what you get."
+
+Review 5: "Terrible experience, would not recommend to anyone."
+```
+
+#### Few-Shot Results
+
+| Review | Classification |
+|----------|----------|
+| 1 | Negative |
+| 2 | Neutral |
+| 3 | Positive |
+| 4 | Neutral |
+| 5 | Negative |
+
+---
+
+### Step 3: Analysis
+
+| Review # | Zero-Shot Result | Few-Shot Result | Correct Label | Improved? |
+|----------|----------|----------|----------|----------|
+| 1 | Negative | Negative | Negative | No |
+| 2 | Neutral | Neutral | Neutral | No |
+| 3 | Positive | Positive | Positive | No |
+| 4 | Neutral | Neutral | Neutral | No |
+| 5 | Negative | Negative | Negative | No |
+
+### Few-Shot Prompting Analysis
+
+Few-shot prompting provides examples that help the model understand the expected task and output format. In more complex classification tasks, these examples can improve consistency and accuracy. In this experiment, both approaches produced the same results because the reviews were relatively straightforward. However, few-shot prompting would likely provide greater benefits when dealing with ambiguous reviews or specialized domains.
